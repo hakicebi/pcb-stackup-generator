@@ -1,0 +1,643 @@
+/* PCB Stackup Generator Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #28374c;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header-controls {
+    position: absolute;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.unit-selector {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.unit-selector label {
+    color: white;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: normal;
+}
+
+.unit-selector select {
+    font-size: 0.9rem;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: auto;
+    min-width: 70px;
+    background-color: #f9f9f9;
+}
+
+.help-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.help-button:hover {
+    background-color: #45a049;
+}
+
+main {
+    padding: 2rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.controls {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.stackup-view {
+    flex: 2;
+    min-width: 400px;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    color: #28374c;
+}
+
+h3 {
+    margin: 1rem 0;
+    color: #28374c;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.controls h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #28374c;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.via-layers-group {
+    display: inline-block;
+    width: 48%;
+}
+
+.via-layers-group:first-of-type {
+    margin-right: 2%;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #28374c;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1c2836;
+}
+
+#stackup-preview {
+    min-height: 300px;
+    border: 1px solid #ddd;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+/* Stackup container with via visualization */
+.stackup-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Via visualization integrated with cross section */
+.via-cross-section {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+}
+
+.via-drill {
+    position: absolute;
+    background-color: #555;
+    z-index: 10;
+    border-radius: 2px;
+    transform: translateX(-50%);
+    transition: all 0.2s ease-in-out;
+}
+
+.via-pad {
+    position: absolute;
+    background-color: #bb6a00;
+    z-index: 11; /* Above the barrel, below the drill */
+    border-radius: 2px;
+    transform: translateX(-50%);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease-in-out;
+}
+
+.via-barrel {
+    position: absolute;
+    background-color: #bb6a00;
+    opacity: 0.8;
+    z-index: 5;
+    border-left: 1px dashed rgba(0, 0, 0, 0.2);
+    border-right: 1px dashed rgba(0, 0, 0, 0.2);
+    transform: translateX(-50%);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Specific via types styling */
+.via-pad.start-pad {
+    z-index: 12;
+    border-top: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.via-pad.end-pad {
+    z-index: 12;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+/* Through hole via styling - standard copper color */
+.via-barrel.through-via {
+    background-color: #a55000;
+    background-image: linear-gradient(to bottom, #bb6a00, #994400);
+}
+
+/* Blind via styling - slightly orange hue */
+.via-barrel.blind-via {
+    background-color: #a05000;
+    background-image: linear-gradient(to bottom, #bb6a00, #994400);
+    opacity: 0.85;
+}
+
+/* Buried via styling - slightly yellow hue */
+.via-barrel.buried-via {
+    background-color: #996600;
+    opacity: 0.9;
+    background-image: linear-gradient(to bottom, #a05000, #996600, #a05000);
+}
+
+/* Micro via styling - bright copper color */
+.via-barrel.micro-via {
+    opacity: 0.95;
+    background-color: #c67000;
+}
+
+/* Staggered via styling - differentiate each segment */
+.via-barrel.staggered-via {
+    background-color: #9370DB; /* Purple tint */
+    opacity: 0.8;
+    background-image: linear-gradient(to bottom, #9932CC, #9370DB);
+    border-left: 1px dotted rgba(255, 255, 255, 0.3);
+    border-right: 1px dotted rgba(255, 255, 255, 0.3);
+}
+
+.via-barrel.staggered-via:nth-child(odd) {
+    background-color: #8A2BE2; /* Different purple for alternating segments */
+}
+
+/* Via connector for staggered vias */
+.via-connector {
+    position: absolute;
+    height: 2px;
+    background-color: #c67000;
+    z-index: 8;
+    transform: translateX(-50%);
+}
+
+/* Hover effects for better visualization */
+.via-element {
+    transition: all 0.2s ease;
+}
+
+.via-element:hover {
+    opacity: 1;
+    filter: brightness(1.2);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Via tooltips */
+.via-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 0.75rem;
+    padding: 3px 6px;
+    border-radius: 3px;
+    z-index: 100;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.via-dimension {
+    position: absolute;
+    right: 10px;
+    font-size: 9px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 1px 3px;
+    border-radius: 2px;
+    white-space: nowrap;
+    z-index: 15;
+}
+
+.via-label {
+    position: absolute;
+    left: 10px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #222;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2px 5px;
+    border-radius: 3px;
+    z-index: 15;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Stackup layer styles */
+.stackup-layer {
+    display: flex;
+    align-items: center;
+}
+
+.layer-visual {
+    min-height: 5px;
+    flex-grow: 1;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 2px;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    position: relative; /* For stacking context with via overlay */
+}
+
+/* Embedded via elements within layers */
+.via-embed {
+    position: absolute;
+    height: 100%;
+    width: 15px;
+    right: 10px;
+    top: 0;
+    border-radius: 2px;
+    z-index: 5;
+}
+
+.via-embed.via-pad-embed {
+    background-color: #bb6a00;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.via-embed.via-drill-embed {
+    background-color: #555;
+    border-radius: 0;
+    width: 8px;
+    right: 13px;
+}
+
+.via-embed.via-drill-embed.micro-via-embed {
+    background-color: transparent;
+    border-top: 8px solid #555;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    width: 0;
+    height: 0;
+    right: 15px;
+    top: 0;
+}
+
+/* Special styles for via in layers */
+.layer-copper .via-pad-embed {
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    z-index: 10;
+}
+
+/* Highlight the layer when hovering over via elements */
+.layer-visual:hover .via-embed:not(.via-embed-hidden) {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.via-embed-hidden {
+    display: none;
+}
+
+/* Enhanced styling for different via types */
+.via-drill.micro-via {
+    background-color: #444;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.via-barrel.blind-via {
+    background-color: #a05000;
+    border-right: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+.via-barrel.buried-via {
+    background-color: #996600;
+    border-left: 1px dashed rgba(255, 255, 255, 0.3);
+    border-right: 1px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Add hover effect on the layer to see the via more clearly */
+.stackup-container:hover .via-cross-section > div {
+    opacity: 1;
+}
+
+.stackup-container:hover .layer-visual {
+    opacity: 0.85;
+}
+
+.layer-copper {
+    background-color: #bb6a00;
+}
+
+.layer-prepreg {
+    background-color: #ffedbf;
+    color: #333;
+}
+
+.layer-core {
+    background-color: #778899;
+}
+
+.layer-solder-mask {
+    background-color: #007700;
+}
+
+.layer-silkscreen {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.layer-info {
+    width: 150px;
+    font-size: 0.9rem;
+    flex-shrink: 0;  /* Prevent width from shrinking */
+}
+
+/* Font size scaling for different layer heights to ensure text is readable */
+.layer-visual[style*="height: 5px"],
+.layer-visual[style*="height: 6px"],
+.layer-visual[style*="height: 7px"],
+.layer-visual[style*="height: 8px"],
+.layer-visual[style*="height: 9px"] {
+    font-size: 0px; /* Hide text in very small layers */
+}
+
+.layer-visual[style*="height: 10px"],
+.layer-visual[style*="height: 11px"],
+.layer-visual[style*="height: 12px"],
+.layer-visual[style*="height: 13px"],
+.layer-visual[style*="height: 14px"] {
+    font-size: 8px;
+}
+
+.layer-visual[style*="height: 15px"],
+.layer-visual[style*="height: 16px"],
+.layer-visual[style*="height: 17px"],
+.layer-visual[style*="height: 18px"],
+.layer-visual[style*="height: 19px"] {
+    font-size: 9px;
+}
+
+/* Add tooltip-like hover for small layers where text is hidden */
+.layer-visual {
+    position: relative;
+}
+
+.layer-visual:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+    right: 0;
+    transform: translateX(100%);
+}
+
+.stackup-data {
+    margin-top: 2rem;
+}
+
+#stackup-details {
+    font-size: 0.9rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #28374c;
+    color: #fff;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+/* Floating sample data button */
+.floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.floating-button button {
+    background-color: #4CAF50;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.floating-button button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    background-color: white;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    background: none;
+    border: none;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.modal-close:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.modal-content {
+    margin-top: 10px;
+}
+
+.modal-content h1 {
+    color: #28374c;
+    margin-bottom: 20px;
+}
+
+.modal-content h2 {
+    color: #28374c;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.modal-content p, .modal-content li {
+    margin-bottom: 10px;
+}
+
+.modal-content ul {
+    padding-left: 20px;
+}

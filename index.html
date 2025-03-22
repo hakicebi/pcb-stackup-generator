@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCB Stackup Generator</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>PCB Stackup Generator</h1>
+        <div class="header-controls">
+            <div class="unit-selector">
+                <label for="unit-select">Units:</label>
+                <select id="unit-select">
+                    <option value="mm" selected>mm</option>
+                    <option value="um">μm</option>
+                    <option value="mils">mils</option>
+                </select>
+            </div>
+            <button id="help-btn" class="help-button">Instructions</button>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="controls">
+                <h2>Stackup Configuration</h2>
+                <div class="form-group">
+                    <label for="layer-count">Number of Layers:</label>
+                    <select id="layer-count">
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="6">6</option>
+                        <option value="8">8</option>
+                        <option value="10">10</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="board-thickness">Board Thickness: <span class="unit-label">mm</span></label>
+                    <input type="number" id="board-thickness" value="1.6" step="0.1" min="0.5" max="3.2">
+                </div>
+                <div class="form-group">
+                    <label for="copper-weight">Copper Weight (oz):</label>
+                    <select id="copper-weight">
+                        <option value="0.5">0.5 oz</option>
+                        <option value="1" selected>1 oz</option>
+                        <option value="2">2 oz</option>
+                        <option value="3">3 oz</option>
+                    </select>
+                </div>
+                
+                <h3>Via Configuration</h3>
+                <div class="form-group">
+                    <label for="via-type">Via Type:</label>
+                    <select id="via-type">
+                        <option value="through">Through Hole</option>
+                        <option value="blind">Blind</option>
+                        <option value="buried">Buried</option>
+                        <option value="micro">Micro Via</option>
+                        <option value="staggered">Staggered</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="via-drill-diameter">Via Drill Diameter: <span class="unit-label">mm</span></label>
+                    <input type="number" id="via-drill-diameter" value="0.3" step="0.05" min="0.1" max="1.0">
+                </div>
+                <div class="form-group">
+                    <label for="via-pad-diameter">Via Pad Diameter: <span class="unit-label">mm</span></label>
+                    <input type="number" id="via-pad-diameter" value="0.6" step="0.05" min="0.2" max="2.0">
+                </div>
+                <div class="form-group via-layers-group">
+                    <label for="via-start-layer">Via Start Layer:</label>
+                    <select id="via-start-layer">
+                        <option value="1">L1 (Top)</option>
+                    </select>
+                </div>
+                <div class="form-group via-layers-group">
+                    <label for="via-end-layer">Via End Layer:</label>
+                    <select id="via-end-layer">
+                        <option value="2">L2 (Bottom)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="staggered-vias-control" style="display: none;">
+                    <label for="staggered-vias-count">Staggered Via Count:</label>
+                    <input type="number" id="staggered-vias-count" value="2" min="2" max="5" step="1">
+                </div>
+                
+                <button id="generate-btn">Generate Stackup</button>
+            </div>
+            
+            <div class="stackup-view">
+                <h2>Stackup Preview</h2>
+                <div id="stackup-preview">
+                    <!-- Stackup will be rendered here -->
+                </div>
+                <div class="stackup-data">
+                    <h3>Stackup Details</h3>
+                    <div id="stackup-details">
+                        <!-- Stackup details will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>PCB Stackup Generator - A tool for visualizing PCB layer stacks</p>
+    </footer>
+
+    <script src="js/sample-data.js"></script>
+    <script src="js/script.js"></script>
+    
+    <!-- Sample Data Button -->
+    <div class="floating-button">
+        <button id="load-sample-btn">Load 4-Layer Sample</button>
+    </div>
+    
+    <!-- Instructions Modal -->
+    <div id="instructions-modal" class="modal-overlay">
+        <div class="modal">
+            <button class="modal-close">&times;</button>
+            <div class="modal-content">
+                <!-- Instructions will be loaded here -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
